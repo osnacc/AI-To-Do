@@ -66,4 +66,4 @@ The OpenAI API key lives only on the server, in .env. It is never shipped to the
 
 ## Try It
                           
-- Live Demo (GitHub Pages - UI only, backend not connected yet) [Try it](https://osnacc.github.io/AI-To-Do/)
+- [Live Demo](https://osnacc.github.io/AI-To-Do/) - UI only, backend not connected yet
