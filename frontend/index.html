@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI To Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+
+        <!-- Header -->
+         <header class="header">
+             <h1 class="headerTitle">AI To Do List</h1>
+             <p class="headerSubtitle">Turn your goals into actionable plans.</p>
+        </header>
+
+        <!-- Goal input -->
+        <section class="goalCard">
+            <label class="goalCardLabel" for="goalInput">
+                What do you want to accomplish?
+                </label>
+                <textarea
+                    id="goalInput"
+                    class="goalCardTextarea"
+                    placeholder='Example: "I want to build an online bookstore in 3 days"'
+                    rows="4"
+                    maxlength="500"
+                ></textarea>
+                <div class="goalCardFooter">
+                    <span id="charCount" class="goalCardHint">0 / 500  </span>
+                <button id="generateBtn" class="btnPrimary" type="button">
+                    Generate Plan
+                </button>
+                </div>
+            </section>
+
+
+        <!-- Loading state (hidden by default) --> 
+         
+        <section id="loading" class="loadingHidden">
+            <div class="loadingSpinner"></div> 
+            <div class="loadingText">
+                <p id="loadingText">Analyzing your goal...</p> 
+            </div>
+         </section>           
+
+
+         <!-- Error state (hidden by default)-->
+
+         <section id="errorBox" class="errorHidden">
+            <p id="errorText">Something went wrong. Please try again.</p>
+         </section>
+         
+
+         <!-- Dashboard (then populated by JS)-->
+            <section id="dashboard" class="dashboardHidden"></section>
+
+            </div>
+
+            <script src="app.js"></script>
+    </body>
+</html>

@@ -1,0 +1,260 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #0b0d12;
+    --bgElevated:#12161f;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --borderStrong: rgba(255,255,255, 0.14);
+
+    --textPrimary: #f2f4f8;
+    --textSecondary: #9aa3b2;
+    --textMuted: #6b7280;
+
+    --accent: #7c5cff;
+    --accentHover: #8f73ff;
+    --accentSoft:rgba(124, 92, 255, 0.15);
+
+    --radiusMd: 14px;
+    --radiusLg: 20px;
+
+    --shadowMd: 0 10px 30px rgba(0,0,0,0.35);
+    --shadowGlow: 0 0 40px rgba(124, 92, 255, 0.25);
+}
+
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,'Helvetica Neue', Arial , sans-serif;
+    background: var(--bg);
+    color: var(--textPrimary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,0.18),transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, rgba(56,189,248,0.10),transparent 55%);
+    background-attachment: fixed;
+}
+
+/* Layout */
+.app{
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 56px 20px 80px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.headerTitle {
+    font-size: clamp(28px,4vw,40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #b8b8ff 100%) ;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.headerSubtitle {
+    margin-top: 10px;
+    color: var(--textSecondary);
+    font-size: 16px;
+}
+
+
+/* Goal card */
+
+.goalCard {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radiusLg);
+padding: 22px;
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+box-shadow: var(--shadowMd);
+transition: border-color 0.2s ease;
+}
+
+.goalCard:focus-within {
+    border-color: var(--borderStrong);
+}
+
+.goalCardLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--textSecondary);
+    margin-bottom: 12px;
+}
+
+.goalCardTextarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 96px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--textPrimary);
+    background: var(--bgElevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radiusMd);
+    outline: none;
+    transition: border-color 0.2s ease , box-shadow 0.2s ease;
+}
+
+.goalCardTextarea::placeholder {
+    color: var(--textMuted);
+}
+
+.goalCardTextarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accentSoft);
+}
+
+.goalCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    gap: 12px;
+}
+
+.goalCardHint {
+    font-size: 12px;
+    color: var(--textMuted);
+}
+
+
+/* Button */
+
+.btnPrimary {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: var(--radiusMd);
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent) 0%, #5b3fd6 100%);
+    box-shadow: var(--shadowGlow);
+    transition: transform 0.1s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btnPrimary:hover {
+    background: linear-gradient(135deg,var(--accentHover) 0%, #6a4de6 100%);
+}
+
+.btnPrimary:active {
+    transform: translateY(1px);
+}
+
+.btnPrimary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* Loading */
+
+#loading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radiusLg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+#loading.loadingHidden {
+    display: none;
+}
+
+.loadingSpinner {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255, 0.12);
+    border-top-color: var(--accent);
+    animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loadingText p {
+    font-size: 15px;
+    color: var(--textSecondary);
+}
+
+/* Error */
+#errorBox {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: rgba(239,68,68,0.10);
+    border: 1px solid rgba(239,68,68,0.35);
+    border-radius: var(--radiusLg);
+    color: #fca5a5;
+    font-size: 14px;
+}
+
+#errorBox.errorHidden {
+    display: none;
+}
+
+/* Dashboard */
+#dashboard {
+    margin-top: 32px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#dashboard:not(.dashboardHidden) {
+    display: flex;
+}
+
+#dashboard.dashboardHidden {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width:520px){
+    .app {
+        padding: 32px 14px 60px;
+    }
+
+    .goalCard{
+        padding: 18px;
+    }
+
+    .goalCardFooter {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .btnPrimary {
+        width: 100%;
+    }
+}
