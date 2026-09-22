@@ -4,7 +4,7 @@
 
 ## Today
 
-Finished the frontend logic for the goal input screen and built the backend endpoint that will eventually call the AI.
+Finished the frontend logic for the goal input screen and built the backend ebdpoint that will eventually call the AI.
 
 Frontend now handles:
 - Live character counter for the textarea
@@ -12,7 +12,7 @@ Frontend now handles:
 - Spinner shown during the request, cleared on completion
 - Error box for empty input
 
-Backend exposes `POST /api/generate`. It validates the incoming goal (non-empty string, max 500 characters) and currently returns a hardcoded JSON plan with three tasks. The AI call is not wired in yet - the endpoint exists so the data shape and client flow can be tested before OpenAI is added.
+Backend exposes `POST /api/generate`. It validates the incoming goal (non-empty string, max 500 characters) and currently returns a hardcoded JSON plan with three tasks. The AI call is not wired in yet - the endpoint exists so the data shape and client flow can be tested befor OpenAI is added.
 
 ## Progress
 

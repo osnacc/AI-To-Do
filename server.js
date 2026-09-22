@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const path = require('path');
 const express = require('express');
-
+const { generatePlan } = require('./openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +18,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.post('/api/generate', (req, res) => {
+app.post('/api/generate', async (req, res) => {
   const { goal } = req.body || {};
 
   // Validation
@@ -32,40 +32,32 @@ app.post('/api/generate', (req, res) => {
       error: 'Goal is too long. Maximum 500 characters.'
     });
   }
-  // Fake structured response (placeholder untill OpenAI is wired in) 
-  const plan = {
-    goal: goal.trim(),
-    summary: 'A short, structured plan generated for the given goal.',
-    tasks: [
-      {
-        id: 1,
-        title: 'Define the final outcome',
-        description: 'Write down exactly what "done" looks like for this goal.',
-        priority: 'high',
-        estimated_minutes: 20,
-        dependencies: []
-      },
-      {
-        id: 2,
-        title: 'List the required resources',
-        description: 'Identify tools, people, and information needed to start.',
-        priority: 'medium',
-        estimated_minutes: 30,
-        dependencies: [1]
-      },
-      {
-        id: 3,
-        title: 'Break the goal into milestones',
-        description: 'Split the goal into 3-5 major checkpoints.',
-        priority: 'high',
-        estimated_minutes: 45,
-        dependencies: [1]
-      }
-    ]
-  };
-  res.json(plan);
-});
 
+  try {
+    const plan = await generatePlan(goal.trim());
+    res.json(plan);
+  }catch (err) {
+    console.error('OpenAI error:', err.message);
+
+    if(err.status === 401) {
+      return res.status(500).json({
+        error: 'AI service authentication failed. Please check sever configuration.'
+      });
+    }
+
+    if(err.status === 429) {
+      return res.status(429).json({
+        error: 'Too many requests. Please try again in a moment.'
+      });
+    }
+    res.status(500).json({
+      error: 'Failed to generate a plan. Please try again.'
+    });
+  }
+  });
+  
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
