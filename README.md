@@ -1,69 +1,55 @@
 # AI To Do List
 
-> A web app that turns a goal discribed in natural language into a structured, actionable to-do list.Powered by OpenAI.
+> Turn any goal written in natural language into a structured, actionable to-do list. Powered by OpenAI.
 
 ## Today
 
-Today i restructured the project into a single directory layout and finished the UI skeleton for the goal input screen.
+Finished the frontend logic for the goal input screen and built the backend endpoint that will eventually call the AI.
 
-The frontend now renders:
-- Header with gradient title ("AI To Do List")
-- Glassmorphism card with a large textarea for the goal
-- Character counter (static - logic comes later)
-- "Generate Plan" button with hover and glow effects
-- Hidden loading, error, and dashboard sections ready for JS logic
+Frontend now handles:
+- Live character counter for the textarea
+- "Generate Plan" button with loading and error states
+- Spinner shown during the request, cleared on completion
+- Error box for empty input
 
-The backend is a minimal Express server that serves the static frontend and exposes a health-check endpoint. The docs/ folder is set up so GitHub Pages can serve the UI as a static preview.
+Backend exposes `POST /api/generate`. It validates the incoming goal (non-empty string, max 500 characters) and currently returns a hardcoded JSON plan with three tasks. The AI call is not wired in yet - the endpoint exists so the data shape and client flow can be tested before OpenAI is added.
 
-No AI integration yet - that comes in the next steps. The goal of this phase was to lock down the layout, theming, and file structure before adding async behavior.
+## Progress
 
-## Completed
+- `docs/index.html` - header, goal card, hidden loading/error/dashboard sections
+- `docs/style.css` - dark theme, gradients, glass cards, responsive layout
+- `docs/app.js` - element wiring, character counter, loading/error toggles, button handler
+- `server.js` - Express server; serves `/docs`; `GET /api/health`; `POST /api/generate` with validation and a fake JSON response
+- `package.json` - scripts `start` / `dev`, deps: express, dotenv, openai
+- `.env.example` - template for `PORT` and `OPENAI_API_KEY`
+- `.gitignore` - protects `.env` and `node_modules/`
 
-- server.js - Express server, serves /docs, exposes GET /api/health
-- package.json - scripts start and dev (`node --watch`), dependencies: express, dotenv, openai
-- .env.example - template for PORT and OPENAI_API_KEY (real .env is gitignored)
-- .gitignore - protects .env and node_modules/
-- docs/index.html - main page: header, goal card, hidden loading/error/dashboard sections
-- docs/style.css - dark theme, radial gradient background, glass cards, gradient button, responsive layout (< 520px)
+No AI yet - next step is connecting OpenAI `gpt-4o-mini` with Structured Outputs.
 
 ## Goal
 
-My goal is to build a tool that removes the "where do I start?" problem. A user types any goal - "build a portfolio website", "prepare for a C++ exam", "organize a birthday party" - and the app returns a concrete, ordered list of tasks with priorities, time estimates, and dependencies.
+Remove the "where do I start?" problem. A user types any goal - "build a portfolio website", "prepare for a C++ exam", "organize a birthday party" - and gets back a concrete, ordered list of tasks with priorities, time estimates, and dependencies.
 
-The AI must not simply rephrase the goal. It must decompose it into specific, actionable steps.
-
-## Architecture
-
-Browser (frontend in `docs/`)
-    ↓ fetch POST /api/generate
-Node.js + Express (`server.js`)
-    ↓ OpenAI SDK
-OpenAI API (gpt-4o-mini, Structured Output)
-    ↓ JSON
-Frontend renders tasks as cards
-
-The OpenAI API key lives only on the server, in .env. It is never shipped to the browser.
+The AI must not just rephrase the goal. It must decompose it into specific, actionable steps.
 
 ## Next Steps
 
-- docs/app.js - element wiring, character counter, loading/error toggles
-- POST /api/generate - backend endpoint with a fake JSON response (schema first, AI later)
-- Connect OpenAI gpt-4o-mini with Structured Outputs (JSON Schema)
-- Render task cards: title, description, priority, estimated time, dependencies
-- Interactive checkbox + progress bar + total time calculation
+- Connect OpenAI `gpt-4o-mini` with Structured Outputs (JSON Schema)
+- Replace the fake response in `/api/generate` with a real model call
+- Render task cards on the frontend: title, description, priority, time, dependencies
+- Interactive checkbox + progress bar + total time
 - Priority statistics
-- Save plan to localStorage
-- Polish: transitions, micro-animations, mobile pass
-- Deploy to Render (backend + static frontend together)
+- Persist plan to `localStorage`
+- Polish, mobile pass, deploy
 
 ## Stack
 
-- Frontend: HTML, CSS, vanilla JavaScript
+- Frontend: HTML, CSS, vanilla JS
 - Backend: Node.js, Express 5
-- AI: OpenAI gpt-4o-mini with Structured Outputs
-- Persistence: localStorage (planned)
-- Static preview: GitHub Pages (`/docs`)
+- AI: OpenAI gpt-4o-mini, Structured Outputs (planned)
+- Persistence: `localStorage` (planned)
+- Preview: GitHub Pages (`/docs`)
 
 ## Try It
-                          
-- [Live Demo](https://osnacc.github.io/AI-To-Do/) - UI only, backend not connected yet
+
+[Live Demo](https://osnacc.github.io/AI-To-Do/) - UI only, backend not connected yet
