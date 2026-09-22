@@ -57,7 +57,11 @@ loadingText.textContent = 'Analyzing your goal...';
 generateBtn.disabled = true;
 
 try {
-    const response = await fetch('/api/generate', {
+    const API_BASE = window.location.hostname === 'localhost'
+  ? ''
+  : 'https://ai-to-do-list-backend.onrender.com';
+
+const response = await fetch(`${API_BASE}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ goal })
@@ -158,5 +162,4 @@ function formatMinutes(mins) {
     const m = mins % 60;
     return m === 0 ? `${h}h` : `${h}h ${m}m`;
 }
-
 
