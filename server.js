@@ -2,12 +2,16 @@ require('dotenv').config();
 
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const { generatePlan } = require('./openai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors({
+  origin: ['https://osnacc.github.io', 'http://localhost:3000']
+}));
 
 app.use(express.static(path.join(__dirname, 'docs')));
 
