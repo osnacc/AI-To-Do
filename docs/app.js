@@ -16,7 +16,7 @@ function showLoading() {
 }
 
 function hideLoading() {
-    loading.classList.add('loadingHidden')
+    loading.classList.add('loadingHidden');
 }
 
 function showError(message) {
@@ -44,7 +44,7 @@ goalInput.addEventListener('input',() => {
 });
 
 // Generate button (placeholder)
-generateBtn.addEventListener('click', () => {
+generateBtn.addEventListener('click', async () => {
 const goal = goalInput.value.trim();
 if (!goal){
     showError('Please describe what you want to accomplish.');
@@ -52,14 +52,111 @@ if (!goal){
 }
 
 hideError();
-
-// Simulated loading state - will be changed with real fetch to  /api/generate.
 showLoading();
 loadingText.textContent = 'Analyzing your goal...';
+generateBtn.disabled = true;
 
-setTimeout(() => {
+try {
+    const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ goal })
+    });
+    const data = await response.json();
+
+    if(!response.ok) {
+        throw new Error(data.error || 'Request failed');
+    }
+
+    renderPlan(data);
+    showDashboard();
+}catch (err){
+    console.error('[AI To Do List] Error:', err);
+    showError(err.message || 'Something went wrong. Please try again.');
+} finally {
     hideLoading();
-    console.log('[AI To Do List Goal submitted:',goal);
-    alert('Wiring works. Backend will be connected in the next step.');
-}, 800);
+    generateBtn.disabled = false;
+}
 });
+
+// Rendering
+
+function renderPlan(data) {
+    dashboard.innerHTML = '';
+
+    //Header
+    const header = document.createElement('div');
+    header.className = 'planHeader';
+
+    const title = document.createElement('h2');
+    title.className = 'planTitle';
+    title.textContent = data.goal;
+
+    const summary = document.createElement('p');
+    summary.className = 'planSummary';
+    summary.textContent = data.summary;
+
+    header.appendChild(title);
+    header.appendChild(summary);
+    dashboard.appendChild(header);
+
+    //Task list
+    const list = document.createElement('div');
+    list.className = 'taskList';
+
+    data.tasks.forEach(task => {
+        const card = document.createElement('div');
+        card.className = `taskCard priority-${task.priority}`;
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'taskCheckbox';
+        checkbox.addEventListener('change', () => {
+            card.classList.toggle('taskCard--done', checkbox.checked);
+        });
+
+        const body = document.createElement('div');
+        body.className = 'taskBody';
+
+        const titleEl = document.createElement('h3');
+        titleEl.className = 'taskTitle';
+        titleEl.textContent = task.title;
+
+        const descEl = document.createElement('p');
+        descEl.className = 'taskDescription';
+        descEl.textContent = task.description;
+
+        const meta = document.createElement('div');
+        meta.className = 'taskMeta';
+
+        const priorityBadge = document.createElement('span');
+        priorityBadge.className = `taskPriority priority-${task.priority}`;
+        priorityBadge.textContent = task.priority.toUpperCase();
+
+        const timeBadge = document.createElement('span');
+        timeBadge.className = 'taskTime';
+        timeBadge.textContent = formatMinutes(task.estimated_minutes);
+
+        meta.appendChild(priorityBadge);
+        meta.appendChild(timeBadge);
+
+        body.appendChild(titleEl);
+        body.appendChild(descEl);
+        body.appendChild(meta);
+
+        card.appendChild(checkbox);
+        card.appendChild(body);
+        list.appendChild(card);
+    });
+
+    dashboard.appendChild(list);
+}
+
+function formatMinutes(mins) {
+    if (mins < 60) return `${mins}m`;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
+
