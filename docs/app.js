@@ -9,7 +9,7 @@ const errorText = document.getElementById('errorText');
 const dashboard = document.getElementById('dashboard');
 const clearBar = document.getElementById('clearBar');
 const clearBtn = document.getElementById('clearBtn');
-
+const emptyState = document.getElementById('emptyState');
 // UI helpers
 
 function showLoading() {
@@ -53,6 +53,7 @@ if (!goal){
 }
 
 hideError();
+hideEmptyState();
 showLoading();
 loadingText.textContent = 'Analyzing your goal...';
 generateBtn.disabled = true;
@@ -90,6 +91,7 @@ const response = await fetch(`${API_BASE}/api/generate`, {
 
 function renderPlan(data) {
     dashboard.innerHTML = '';
+    void dashboard.offsetWidth;
 
     //Header
     const header = document.createElement('div');
@@ -129,7 +131,7 @@ function renderPlan(data) {
     progressBar.appendChild(progressFill);
 
     const progressPercent = document.createElement('div');
-    progressPercent.calssName = 'statsPercent';
+    progressPercent.className = 'statsPercent';
     progressPercent.id = 'statsPercent';
     progressPercent.textContent = '0%';
 
@@ -169,7 +171,7 @@ function renderPlan(data) {
     const list = document.createElement('div');
     list.className = 'taskList';
 
-    data.tasks.forEach(task => {
+    data.tasks.forEach((task, index) => {
         const card = document.createElement('div');
         card.className = `taskCard priority-${task.priority}`;
         card.dataset.taskId = String(task.id);
@@ -215,6 +217,7 @@ function renderPlan(data) {
         card.appendChild(checkbox);
         card.appendChild(body);
         list.appendChild(card);
+        card.style.animationDelay = `${(index * 40)}ms`;
     });
 
     dashboard.appendChild(list);
@@ -252,7 +255,7 @@ function updateStats() {
 function formatPriorities(tasks) {
     const counts = { high: 0, medium: 0, low: 0 };
     tasks.forEach(t => {counts[t.priority] += 1; });
-    return `High ${counts.high} Medium ${counts.medium} Low ${counts.low}`;
+    return `High ${counts.high}   Medium ${counts.medium}   Low ${counts.low}`;
 }
 
 // LocalStorage
@@ -313,6 +316,7 @@ function restorePlan() {
     renderPlan(stored.plan);
     showDashboard();
     showClearBar();
+    hideEmptyState();
 
     const checkedIds = new Set(stored.checked || []);
     document.querySelectorAll('.taskCard').forEach(card => {
@@ -337,6 +341,14 @@ function hideClearBar(){
     clearBar.classList.add('clearBarHidden');
 }
 
+function showEmptyState(){
+    emptyState.classList.remove('emptyStateHidden');
+}
+
+function hideEmptyState(){
+    emptyState.classList.add('emptyStateHidden');
+}
+
 // Events & init
 
 clearBtn.addEventListener('click', () => {
@@ -345,8 +357,10 @@ clearBtn.addEventListener('click', () => {
     hideDashboard();
     hideClearBar();
     hideError();
+    showEmptyState();
     goalInput.value = '';
     charCount.textContent = '0 / 500';
 });
 
 restorePlan();
+

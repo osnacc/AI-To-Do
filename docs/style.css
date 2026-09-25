@@ -302,6 +302,7 @@ transition: border-color 0.2s ease;
 .taskCard:hover {
     border-color: var(--borderStrong);
     background: rgba(255, 255, 255, 0.06);
+    transform: translateX(4px);
 }
 
 .taskCard.priority-high{
@@ -409,7 +410,7 @@ transition: border-color 0.2s ease;
     opacity: 0.55;
 }
 
-.taskCard--done .tasktitle {
+.taskCard--done .taskTitle {
     text-decoration: line-through;
     text-decoration-color: var(--textMuted);
 }
@@ -496,7 +497,7 @@ transition: border-color 0.2s ease;
 /* Clear Bar */
 #clearBar {
     display: flex;
-    justify-content: flexe-end;
+    justify-content: flex-end;
     margin-bottom: 16px;
 }
 
@@ -521,4 +522,45 @@ transition: border-color 0.2s ease;
     border-color: var(--borderStrong);
     color: var(--textPrimary);
     background: rgba(255, 255, 255, 0.04);
+}
+
+/* Animations */
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.taskCard {
+    animation: cardFadeIn 0.5s ease backwards;
+}
+
+.taskCard:hover {
+    border-color: var(--borderStrong);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Empty state */
+.emptyState {
+    margin-top: 32px;
+    padding: 28px 24px;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: var(--radiusLg);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.emptyStateText {
+    font-size: 14px;
+    color: var(--textMuted);
+    line-height: 1.7;
+}
+
+.emptyState.emptyStateHidden {
+    display: none;
 }
