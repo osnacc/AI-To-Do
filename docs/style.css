@@ -413,3 +413,112 @@ transition: border-color 0.2s ease;
     text-decoration: line-through;
     text-decoration-color: var(--textMuted);
 }
+
+.planStats {
+    margin: 24px 0 28px;
+    padding: 20px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radiusLg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.statsLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--textSecondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.statsCount {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--textPrimary);
+    margin-bottom: 12px;
+}
+
+.progressBar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progressFill{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent) 0%, #5b3fd6 100%);
+    border-radius: 999px;
+    transition: width 0.35s ease;
+}
+
+.statsPercent {
+    font-size: 14px;
+    color: var(--textSecondary);
+    margin-bottom: 18px;
+}
+
+.statsRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.statsRowLabel {
+    color: var(--textSecondary);
+}
+
+.statsRowValue {
+    color: var(--textPrimary);
+    font-weight: 500;
+}
+
+/* Responsive */
+@media(max-width: 520px){
+    .planStats {
+        padding: 16px;
+    }
+
+
+.statsCount {
+    font-size: 16px;
+}
+}
+
+/* Clear Bar */
+#clearBar {
+    display: flex;
+    justify-content: flexe-end;
+    margin-bottom: 16px;
+}
+
+#clearBar.clearBarHidden {
+    display: none;
+}
+
+.btnClear {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--textSecondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radiusMd);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.btnClear:hover {
+    border-color: var(--borderStrong);
+    color: var(--textPrimary);
+    background: rgba(255, 255, 255, 0.04);
+}
