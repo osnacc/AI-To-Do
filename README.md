@@ -32,6 +32,6 @@ It's the final development session. The app is fully deployed and working end-to
 
 ## Try It
 
-[Live Demo](https://osnacc.github.io/AI-To-Do/) - fully working, backend on Render
+[Live Demo](https://osnacc.github.io/AI-To-Do/) 
 
 **Note:** the first request may take up to 1 minute while the free Render instance wakes up. Subsequent requests are fast.
