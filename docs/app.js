@@ -245,8 +245,6 @@ function formatPriorities(tasks) {
     return `High ${counts.high}   Medium ${counts.medium}   Low ${counts.low}`;
 }
 
-// localStorage
-
 const STORAGE_KEY = 'aiToDoList.plan';
 
 function savePlan(data) {
@@ -348,4 +346,3 @@ clearBtn.addEventListener('click', () => {
 });
 
 restorePlan();
-

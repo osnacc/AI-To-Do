@@ -1,10 +1,10 @@
-# Devlog 4
+# Devlog 5
 
-> Turn any goal written in natural language into a structured, actionable to-do list. Powered by OpenAI.
+> Turn any goal written in natural language into a structured, actionable to-do list. Powered by Groq AI.
 
 ## Progress Done
 
-It's the final development session. The app is fully deployed and working end-to-end: user opens the GitHub Pages link, types any goal, gets back a structured AI-generated plan as task cards, checks off tasks, and the whole state persists in the browser. I finished the interaction layer (progress bar, statistics, localStorage persistence, clear plan) and polished the UI with animations, hover states, and an empty state. The project is now feature-complete.
+It's the final development session. The app is fully implemented and working end-to-end: the user types any goal, gets back a structured AI-generated plan as task cards, checks off tasks, and the whole state persists in the browser. I finished the interaction layer (progress bar, statistics, localStorage persistence, clear plan) and polished the UI with animations, hover states, and an empty state. The project is now feature-complete and runs via a local Node.js server.
 
 ## Features Added/Worked on
 
@@ -30,8 +30,11 @@ It's the final development session. The app is fully deployed and working end-to
 - I learnt how data-task-id attributes bridge DOM and app state
 - I learnt to keep the app resilient: even if one part fails, the rest keeps working
 
-## Try It
+## Try It (How to Run Locally)
 
-[Live Demo](https://osnacc.github.io/AI-To-Do/) - fully working, backend on Render
+To use the app, download all project files and run the backend server locally on your machine:
 
-**Note:** the first request may take up to 1 minute while the free Render instance wakes up. Subsequent requests are fast.
+1. **Clone or Download** this repository to your computer.
+2. Open your terminal in the project folder and install dependencies:
+   ```bash
+   npm install
