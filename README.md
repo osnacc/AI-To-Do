@@ -1,4 +1,4 @@
-# Devlog 5
+# Devlog 4
 
 > Turn any goal written in natural language into a structured, actionable to-do list. Powered by Groq AI.
 
