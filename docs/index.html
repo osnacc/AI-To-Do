@@ -9,63 +9,55 @@
 <body>
     <div class="app">
 
-        <!-- Header -->
-         <header class="header">
-             <h1 class="headerTitle">AI To Do List</h1>
-             <p class="headerSubtitle">Turn your goals into actionable plans.</p>
+        <header class="header">
+            <h1 class="headerTitle">AI To Do List</h1>
+            <p class="headerSubtitle">Turn your goals into actionable plans.</p>
         </header>
 
-        <!-- Goal input -->
         <section class="goalCard">
             <label class="goalCardLabel" for="goalInput">
                 What do you want to accomplish?
-                </label>
-                <textarea
-                    id="goalInput"
-                    class="goalCardTextarea"
-                    placeholder='Example: "I want to build an online bookstore in 3 days"'
-                    rows="4"
-                    maxlength="500"
-                ></textarea>
-                <div class="goalCardFooter">
-                    <span id="charCount" class="goalCardHint">0 / 500  </span>
+            </label>
+            <textarea
+                id="goalInput"
+                class="goalCardTextarea"
+                placeholder='Example: "I want to build an online bookstore in 3 days"'
+                rows="4"
+                maxlength="500"
+            ></textarea>
+            <div class="goalCardFooter">
+                <span id="charCount" class="goalCardHint">0 / 500</span>
                 <button id="generateBtn" class="btnPrimary" type="button">
                     Generate Plan
                 </button>
-                </div>
-            </section>
-
-
-        <!-- Loading state (hidden by default) --> 
-         
-        <section id="loading" class="loadingHidden">
-            <div class="loadingSpinner"></div> 
-            <div class="loadingText">
-                <p id="loadingText">Analyzing your goal...</p> 
             </div>
-         </section>           
+        </section>
 
+        <section id="loading" class="loadingHidden">
+            <div class="loadingSpinner"></div>
+            <div class="loadingText">
+                <p id="loadingText">Analyzing your goal...</p>
+            </div>
+        </section>
 
-         <!-- Error state (hidden by default)-->
-
-         <section id="errorBox" class="errorHidden">
+        <section id="errorBox" class="errorHidden">
             <p id="errorText">Something went wrong. Please try again.</p>
-         </section>
+        </section>
 
-         <section id="emptyState" class="emptyState">
+        <section id="emptyState" class="emptyState">
             <p class="emptyStateText">
                 No plan yet.<br>
                 Describe your goal above and click "Generate Plan".
             </p>
-         </section>
-         
+        </section>
 
-            <div id="clearBar" class="clearBarHidden">
-                <button id="clearBtn" class="btnClear" type="button">Clear Plan</button>
-            </div>
-            <section id="dashboard" class="dashboardHidden"></section>
+        <div id="clearBar" class="clearBarHidden">
+            <button id="clearBtn" class="btnClear" type="button">Clear Plan</button>
+        </div>
 
-            </div>
-            <script src="app.js"></script>
-    </body>
+        <section id="dashboard" class="dashboardHidden"></section>
+
+    </div>
+    <script src="app.js"></script>
+</body>
 </html>

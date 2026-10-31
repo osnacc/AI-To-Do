@@ -1,4 +1,3 @@
-// Element references
 const goalInput = document.getElementById('goalInput');
 const generateBtn = document.getElementById('generateBtn');
 const charCount = document.getElementById('charCount');
@@ -10,7 +9,6 @@ const dashboard = document.getElementById('dashboard');
 const clearBar = document.getElementById('clearBar');
 const clearBtn = document.getElementById('clearBtn');
 const emptyState = document.getElementById('emptyState');
-// UI helpers
 
 function showLoading() {
     loading.classList.remove('loadingHidden');
@@ -21,9 +19,9 @@ function hideLoading() {
 }
 
 function showError(message) {
-    errorText.textContent = message ; 
+    errorText.textContent = message;
     errorBox.classList.remove('errorHidden');
-} 
+}
 
 function hideError() {
     errorBox.classList.add('errorHidden');
@@ -37,63 +35,55 @@ function hideDashboard() {
     dashboard.classList.add('dashboardHidden');
 }
 
-
-// Character counter
-
-goalInput.addEventListener('input',() => {
+goalInput.addEventListener('input', () => {
     charCount.textContent = `${goalInput.value.length} / 500`;
 });
 
-// Generate button (placeholder)
 generateBtn.addEventListener('click', async () => {
-const goal = goalInput.value.trim();
-if (!goal){
-    showError('Please describe what you want to accomplish.');
-    return;
-}
-
-hideError();
-hideEmptyState();
-showLoading();
-loadingText.textContent = 'Analyzing your goal...';
-generateBtn.disabled = true;
-
-try {
-    const API_BASE = window.location.hostname === 'localhost'
-  ? ''
-  : 'https://ai-to-do-list-backend.onrender.com';
-
-const response = await fetch(`${API_BASE}/api/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ goal })
-    });
-    const data = await response.json();
-
-    if(!response.ok) {
-        throw new Error(data.error || 'Request failed');
+    const goal = goalInput.value.trim();
+    if (!goal) {
+        showError('Please describe what you want to accomplish.');
+        return;
     }
 
-    renderPlan(data);
-    showDashboard();
-    savePlan(data);
-    showClearBar();
-}catch (err){
-    console.error('[AI To Do List] Error:', err);
-    showError(err.message || 'Something went wrong. Please try again.');
-} finally {
-    hideLoading();
-    generateBtn.disabled = false;
-}
-});
+    hideError();
+    hideEmptyState();
+    showLoading();
+    loadingText.textContent = 'Analyzing your goal...';
+    generateBtn.disabled = true;
 
-// Rendering
+    try {
+        const API_BASE = window.location.hostname === 'localhost'
+            ? ''
+            : 'https://ai-to-do-list-backend.onrender.com';
+
+        const response = await fetch(`${API_BASE}/api/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ goal })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Request failed');
+        }
+
+        renderPlan(data);
+        showDashboard();
+        savePlan(data);
+        showClearBar();
+    } catch (err) {
+        console.error('Error:', err);
+        showError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+        hideLoading();
+        generateBtn.disabled = false;
+    }
+});
 
 function renderPlan(data) {
     dashboard.innerHTML = '';
-    void dashboard.offsetWidth;
 
-    //Header
     const header = document.createElement('div');
     header.className = 'planHeader';
 
@@ -108,8 +98,6 @@ function renderPlan(data) {
     header.appendChild(title);
     header.appendChild(summary);
     dashboard.appendChild(header);
-
-    // Stats
 
     const stats = document.createElement('div');
     stats.className = 'planStats';
@@ -147,7 +135,7 @@ function renderPlan(data) {
     );
     timeRow.appendChild(timeLabel);
     timeRow.appendChild(timeValue);
-    
+
     const priorityRow = document.createElement('div');
     priorityRow.className = 'statsRow';
     const priorityLabel = document.createElement('span');
@@ -167,11 +155,11 @@ function renderPlan(data) {
     stats.appendChild(priorityRow);
 
     dashboard.appendChild(stats);
-    //Task list
+
     const list = document.createElement('div');
     list.className = 'taskList';
 
-    data.tasks.forEach((task, index) => {
+    data.tasks.forEach(task => {
         const card = document.createElement('div');
         card.className = `taskCard priority-${task.priority}`;
         card.dataset.taskId = String(task.id);
@@ -217,7 +205,6 @@ function renderPlan(data) {
         card.appendChild(checkbox);
         card.appendChild(body);
         list.appendChild(card);
-        card.style.animationDelay = `${(index * 40)}ms`;
     });
 
     dashboard.appendChild(list);
@@ -238,7 +225,7 @@ function updateStats() {
     let completed = 0;
     cards.forEach(card => {
         const cb = card.querySelector('.taskCheckbox');
-        if(cb && cb.checked) completed += 1;
+        if (cb && cb.checked) completed += 1;
     });
 
     const percent = Math.round((completed / total) * 100);
@@ -247,50 +234,50 @@ function updateStats() {
     const fillEl = document.getElementById('progressFill');
     const percentEl = document.getElementById('statsPercent');
 
-    if(countEl) countEl.textContent = `${completed} / ${total} tasks completed`;
-    if(fillEl) fillEl.style.width = `${percent}%`;
-    if(percentEl) percentEl.textContent = `${percent}%`;
+    if (countEl) countEl.textContent = `${completed} / ${total} tasks completed`;
+    if (fillEl) fillEl.style.width = `${percent}%`;
+    if (percentEl) percentEl.textContent = `${percent}%`;
 }
 
 function formatPriorities(tasks) {
     const counts = { high: 0, medium: 0, low: 0 };
-    tasks.forEach(t => {counts[t.priority] += 1; });
+    tasks.forEach(t => { counts[t.priority] += 1; });
     return `High ${counts.high}   Medium ${counts.medium}   Low ${counts.low}`;
 }
 
-// LocalStorage
+// localStorage
 
 const STORAGE_KEY = 'aiToDoList.plan';
 
 function savePlan(data) {
     try {
-        const payload = { plan: data, checked: []};
+        const payload = { plan: data, checked: [] };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    } catch(err){
-        console.error('[AI To Do List] Failed to save plan:', err);
+    } catch (err) {
+        console.error('Failed to save plan:', err);
     }
 }
 
-function loadPlan(){
-    try{
+function loadPlan() {
+    try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw)return null;
+        if (!raw) return null;
         return JSON.parse(raw);
-    } catch(err) {
-        console.error('[AI To Do List] Failed to load plan', err);
+    } catch (err) {
+        console.error('Failed to load plan', err);
         return null;
     }
 }
 
-function clearPlan(){
+function clearPlan() {
     try {
         localStorage.removeItem(STORAGE_KEY);
-    } catch(err){
-        console.error('[AI To Do List] Failed to clear plan', err);
+    } catch (err) {
+        console.error('Failed to clear plan', err);
     }
 }
 
-function persistCheckboxStates(){
+function persistCheckboxStates() {
     const stored = loadPlan();
     if (!stored || !stored.plan) return;
 
@@ -298,20 +285,20 @@ function persistCheckboxStates(){
     document.querySelectorAll('.taskCard').forEach(card => {
         const cb = card.querySelector('.taskCheckbox');
         const id = Number(card.dataset.taskId);
-        if(cb && cb.checked) checkedIds.push(id);
+        if (cb && cb.checked) checkedIds.push(id);
     });
 
     stored.checked = checkedIds;
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
-    } catch(err) {
-        console.error('[AI To Do List] Failed to persist checkboxes', err);
+    } catch (err) {
+        console.error('Failed to persist checkboxes', err);
     }
 }
 
 function restorePlan() {
     const stored = loadPlan();
-    if(!stored || !stored.plan) return false;
+    if (!stored || !stored.plan) return false;
 
     renderPlan(stored.plan);
     showDashboard();
@@ -321,9 +308,9 @@ function restorePlan() {
     const checkedIds = new Set(stored.checked || []);
     document.querySelectorAll('.taskCard').forEach(card => {
         const id = Number(card.dataset.taskId);
-        if(!checkedIds.has(id)) return;
+        if (!checkedIds.has(id)) return;
         const cb = card.querySelector('.taskCheckbox');
-        if(cb) {
+        if (cb) {
             cb.checked = true;
             card.classList.add('taskCard--done');
         }
@@ -333,23 +320,21 @@ function restorePlan() {
     return true;
 }
 
-function showClearBar(){
+function showClearBar() {
     clearBar.classList.remove('clearBarHidden');
 }
 
-function hideClearBar(){
+function hideClearBar() {
     clearBar.classList.add('clearBarHidden');
 }
 
-function showEmptyState(){
+function showEmptyState() {
     emptyState.classList.remove('emptyStateHidden');
 }
 
-function hideEmptyState(){
+function hideEmptyState() {
     emptyState.classList.add('emptyStateHidden');
 }
-
-// Events & init
 
 clearBtn.addEventListener('click', () => {
     clearPlan();

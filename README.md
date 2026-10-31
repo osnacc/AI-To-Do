@@ -8,7 +8,7 @@ It's the final development session. The app is fully deployed and working end-to
 
 ## Features Added/Worked on
 
-- Progress bar with smooth width animation on checkbox click
+- Progress bar
 - Task counter (`3 / 8 tasks completed`) and live percentage
 - Total estimated time calculated from all tasks
 - Priority statistics (High / Medium / Low counts)
@@ -16,8 +16,6 @@ It's the final development session. The app is fully deployed and working end-to
 - Automatic restore of plan and checked tasks on page reload
 - Clear Plan button to wipe localStorage and return to empty state
 - Empty state hint shown when no plan exists
-- Card hover effect with subtle right shift 
-- Card fade-in animation on first render
 - Fixed localStorage edge cases with try / catch
 - Added `data-task-id` on cards for reliable state restoration 
 
