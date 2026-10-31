@@ -55,7 +55,32 @@
             <button id="clearBtn" class="btnClear" type="button">Clear Plan</button>
         </div>
 
-        <section id="dashboard" class="dashboardHidden"></section>
+        <section id="dashboard" class="dashboardHidden">
+            <div class="planHeader">
+                <h2 id="planTitle" class="planTitle"></h2>
+                <p id="planSummary" class="planSummary"></p>
+            </div>
+
+            <div class="planStats">
+                <div class="statsLabel">Progress</div>
+                <div id="statsCount" class="statsCount">0 / 0 tasks completed</div>
+                <div class="progressBar">
+                    <div id="progressFill" class="progressFill" style="width: 0%;"></div>
+                </div>
+                <div id="statsPercent" class="statsPercent">0% completed</div>
+
+                <div class="statsRow">
+                    <span class="statsRowLabel">Total estimated time:</span>
+                    <span id="statsTime">0 mins</span>
+                </div>
+                <div class="statsRow">
+                    <span class="statsRowLabel">Priority breakdown:</span>
+                    <span id="statsPriority">0 High, 0 Medium, 0 Low</span>
+                </div>
+            </div>
+
+            <div id="taskList" class="taskList"></div>
+        </section>
 
     </div>
     <script src="app.js"></script>
